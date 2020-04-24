@@ -1,8 +1,27 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace MyCalculator.Classes
 {
+    public enum EOperator
+    {
+        NONE,
+        ADDITION,
+        SUBTRACTION,
+        MULTIPLICATION,
+        DIVISION,
+        EQUAL,
+    }
+
+    public enum EFunction
+    {
+        NONE,
+        SQUARE_ROOT,
+        SQUARE,
+        INVERSE,
+        NEGATE,
+        PERCENT,
+    }
+
     public enum EValueError
     {
         NO_ERROR,
@@ -15,42 +34,67 @@ namespace MyCalculator.Classes
 
     public static class SimpleMath
     {
-        public static double Add(double x, double y)
+        public static double Add(double x, double y, out EValueError err)
         {
-            return x + y;
+            double z = x + y;
+            err = GetError(z);
+            return z;
         }
 
-        public static double Subtract(double x, double y)
+        public static double Subtract(double x, double y, out EValueError err)
         {
-            return x - y;
+            double z = x - y;
+            err = GetError(z);
+            return z;
         }
 
-        public static double Multiply(double x, double y)
+        public static double Multiply(double x, double y, out EValueError err)
         {
-            return x * y;
+            double z = x * y;
+            err = GetError(z);
+            return z;
         }
 
-        public static double Divide(double x, double y)
+        public static double Divide(double x, double y, out EValueError err)
         {
-            //Debug.Assert(y != 0);
-            return x / y;
+            double z = x / y;
+            if (y == 0)
+            {
+                err = EValueError.ZERO_DIVISION;
+            }
+            else
+            {
+                err = GetError(z);
+            }
+            return z;
         }
 
-        public static double GetSquareRoot(double x)
+        public static double GetSquareRoot(double x, out EValueError err)
         {
-            //Debug.Assert(x >= 0);
-            return Math.Sqrt(x);
+            double z = Math.Sqrt(x);
+            err = GetError(z);
+            return z;
         }
 
-        public static double GetSquare(double x)
+        public static double GetSquare(double x, out EValueError err)
         {
-            return x * x;
+            double z = Math.Sqrt(x * x);
+            err = GetError(z);
+            return z;
         }
 
-        public static double GetInverse(double x)
+        public static double GetInverse(double x, out EValueError err)
         {
-            //Debug.Assert(x != 0);
-            return 1 / x;
+            double z = 1 / x;
+            if (x == 0)
+            {
+                err = EValueError.ZERO_DIVISION;
+            }
+            else
+            {
+                err = GetError(z);
+            }
+            return z;
         }
 
         public static EValueError GetError(double x)

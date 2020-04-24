@@ -20,26 +20,6 @@ using MyCalculator.Classes;
 
 namespace MyCalculator
 {
-	public enum EOperator
-	{
-		NONE,
-		ADDITION,
-		SUBTRACTION,
-		MULTIPLICATION,
-		DIVISION,
-		EQUAL,
-	}
-
-	public enum EFunction
-	{
-		NONE,
-		SQUARE_ROOT,
-		SQUARE,
-		INVERSE,
-		NEGATE,
-		PERCENT,
-	}
-
 	public enum EMode
 	{
 		NUMBER,
@@ -64,7 +44,7 @@ namespace MyCalculator
 
 	public class Operand
 	{
-		public double Domain;
+		public double DomainValue;
 		public double FinalValue;
 		public List<EFunction> Functions = null;
 
@@ -72,7 +52,7 @@ namespace MyCalculator
 
 		public Operand(double initValue)
 		{
-			Domain = initValue;
+			DomainValue = initValue;
 			FinalValue = initValue;
 			Functions = new List<EFunction>();
 		}
@@ -83,7 +63,7 @@ namespace MyCalculator
 			{
 				return FinalValue.ToString();
 			}
-			string str = Domain.ToString();
+			string str = DomainValue.ToString();
 			foreach (var type in Functions)
 			{
 				str = string.Format(sFormats[(int)type], str);
@@ -95,6 +75,7 @@ namespace MyCalculator
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
+		
 		public static readonly string[] ERROR_MESSAGES = { string.Empty, "0으로 나눌 수 없습니다", "정의된 수가 아닙니다", "오버플로우", "언더플로우", "알 수 없는 오류"};
 
 		private static readonly string sCharZero = "0";
@@ -106,10 +87,10 @@ namespace MyCalculator
 		private static readonly string sFormatInverse = sCharInverse + "({0})";
 		private static readonly string[] sOperatorSigns = { string.Empty, "+", "-", "×", "÷", "=" };
 
-		private EOperator mOperator = EOperator.NONE;
-		private ObservableCollection<string> mEquations = new ObservableCollection<string>();
 		private double mLastValue = 0.0;
+		private ObservableCollection<string> mEquations = new ObservableCollection<string>();
 		private EMode mMode = EMode.NUMBER;
+		private EOperator mOperator = EOperator.NONE;
 		private Operand mOperand = new Operand(0);
 
 		#region Public Properties
@@ -141,12 +122,17 @@ namespace MyCalculator
 		{
 			get
 			{
-				string str = string.Empty;
+				StringBuilder sb = new StringBuilder();
 				foreach (var x in mEquations)
 				{
-					str += x + " ";
+					sb.Append(x);
+					sb.Append(" ");
 				}
-				return str;
+				if (sb.Length > 0)
+				{
+					--sb.Length;
+				}
+				return sb.ToString();
 			}
 		}
 		#endregion
@@ -160,7 +146,7 @@ namespace MyCalculator
 		}
 
 		#region xControl Events
-		private void xLabelResult_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		private void xLabelDisplay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
 			Clipboard.SetText(((Label)sender).Content.ToString());
 			MessageBox.Show("Copied!", Title, MessageBoxButton.OK, MessageBoxImage.Information);
@@ -191,8 +177,8 @@ namespace MyCalculator
 			double parsedDouble = 0;
 			if (double.TryParse(tempStringValue, out parsedDouble))
 			{
-				mOperand.Domain = parsedDouble;
-				mOperand.FinalValue = mOperand.Domain;
+				mOperand.DomainValue = parsedDouble;
+				mOperand.FinalValue = mOperand.DomainValue;
 				DisplayedValue = tempStringValue;
 			}
 			else
@@ -219,24 +205,12 @@ namespace MyCalculator
 				mOperand = new Operand(0);
 				mEquations.Clear();
 			}
-			DisplayedValue = mOperand.Domain.ToString();
+			DisplayedValue = mOperand.DomainValue.ToString();
 			if (!DisplayedValue.Contains("."))
 			{
 				DisplayedValue += ".";
 			}
 			mMode = EMode.NUMBER;
-		}
-
-		private bool isOperatorSign(string str)
-		{
-			for (int i = 1; i < sOperatorSigns.Length; ++i)
-			{
-				if (str == sOperatorSigns[i])
-				{
-					return true;
-				}
-			}
-			return false;
 		}
 
 		private void xButtonFunction_Click(object sender, RoutedEventArgs e)
@@ -262,22 +236,23 @@ namespace MyCalculator
 				mOperand = new Operand(mLastValue);
 				mEquations.Clear();
 			}
+			EValueError err = EValueError.NO_ERROR;
 			EFunction functionType = getFunctionOfButton(sender);
 			if (functionType == EFunction.SQUARE_ROOT)
 			{
-				mOperand.FinalValue = SimpleMath.GetSquareRoot(mOperand.FinalValue);
+				mOperand.FinalValue = SimpleMath.GetSquareRoot(mOperand.FinalValue, out err);
 				mOperand.Functions.Add(EFunction.SQUARE_ROOT);
 				mEquations.Add(mOperand.ToString());
 			}
 			else if (functionType == EFunction.SQUARE)
 			{
-				mOperand.FinalValue = SimpleMath.GetSquare(mOperand.FinalValue);
+				mOperand.FinalValue = SimpleMath.GetSquare(mOperand.FinalValue, out err);
 				mOperand.Functions.Add(EFunction.SQUARE);
 				mEquations.Add(mOperand.ToString());
 			}
 			else if (functionType == EFunction.INVERSE)
 			{
-				mOperand.FinalValue = SimpleMath.GetInverse(mOperand.FinalValue);
+				mOperand.FinalValue = SimpleMath.GetInverse(mOperand.FinalValue, out err);
 				mOperand.Functions.Add(EFunction.INVERSE);
 				mEquations.Add(mOperand.ToString());
 			}
@@ -285,8 +260,8 @@ namespace MyCalculator
 			{
 				if (mOperand.Functions.Count == 0)
 				{
-					mOperand.Domain *= -1;
-					mOperand.FinalValue = mOperand.Domain;
+					mOperand.DomainValue *= -1;
+					mOperand.FinalValue = mOperand.DomainValue;
 				}
 				else
 				{
@@ -299,8 +274,8 @@ namespace MyCalculator
 			{
 				if (mOperand.Functions.Count == 0)
 				{
-					mOperand.Domain /= 100;
-					mOperand.FinalValue = mOperand.Domain;
+					mOperand.DomainValue /= 100;
+					mOperand.FinalValue = mOperand.DomainValue;
 				}
 				else
 				{
@@ -309,7 +284,16 @@ namespace MyCalculator
 					mEquations.Add(mOperand.ToString());
 				}
 			}
-			DisplayedValue = mOperand.ToString();
+			// Check error
+			if (err == EValueError.NO_ERROR)
+			{
+				DisplayedValue = mOperand.ToString();
+			}
+			else
+			{
+				DisplayedValue = ERROR_MESSAGES[(int)err];
+				setButtonsEnabled(false);
+			}
 			mMode = EMode.FUNCTION;
 		}
 
@@ -321,6 +305,7 @@ namespace MyCalculator
 				{
 					mEquations.Add(mOperand.ToString());
 				}
+				EValueError err = EValueError.NO_ERROR;
 				// 이전 마지막 연산
 				if (mOperator == EOperator.NONE)
 				{
@@ -328,25 +313,35 @@ namespace MyCalculator
 				}
 				else if (mOperator == EOperator.ADDITION)
 				{
-					mLastValue = SimpleMath.Add(mLastValue, mOperand.FinalValue);
+					mLastValue = SimpleMath.Add(mLastValue, mOperand.FinalValue, out err);
 				}
 				else if (mOperator == EOperator.SUBTRACTION)
 				{
-					mLastValue = SimpleMath.Subtract(mLastValue, mOperand.FinalValue);
+					mLastValue = SimpleMath.Subtract(mLastValue, mOperand.FinalValue, out err);
 				}
 				else if (mOperator == EOperator.MULTIPLICATION)
 				{
-					mLastValue = SimpleMath.Multiply(mLastValue, mOperand.FinalValue);
+					mLastValue = SimpleMath.Multiply(mLastValue, mOperand.FinalValue, out err);
 				}
 				else if (mOperator == EOperator.DIVISION)
 				{
-					mLastValue = SimpleMath.Divide(mLastValue, mOperand.FinalValue);
+					mLastValue = SimpleMath.Divide(mLastValue, mOperand.FinalValue, out err);
 				}
 				else if (mOperator == EOperator.EQUAL)
 				{
 					mLastValue = mOperand.FinalValue;
 				}
-				DisplayedValue = mLastValue.ToString();
+				// Check error
+				if (err == EValueError.NO_ERROR)
+				{
+					DisplayedValue = mOperand.ToString();
+				}
+				else
+				{
+					DisplayedValue = ERROR_MESSAGES[(int)err];
+					setButtonsEnabled(false);
+					return;
+				}
 			}
 			else if (mMode == EMode.OPERATOR)
 			{
@@ -375,8 +370,10 @@ namespace MyCalculator
 
 		private void xButtonAllClear_Click(object sender, RoutedEventArgs e)
 		{
-			mLastValue = 0;
+			mMode = EMode.NUMBER;
 			mOperator = EOperator.NONE;
+			mOperand = new Operand(0);
+			mLastValue = 0;
 			mEquations.Clear();
 			DisplayedValue = sCharZero;
 			setButtonsEnabled(true);
@@ -394,8 +391,8 @@ namespace MyCalculator
 				double parsedDouble = 0;
 				if (double.TryParse(DisplayedValue, out parsedDouble))
 				{
-					mOperand.Domain = parsedDouble;
-					mOperand.FinalValue = mOperand.Domain;
+					mOperand.DomainValue = parsedDouble;
+					mOperand.FinalValue = mOperand.DomainValue;
 				}
 				else
 				{
@@ -412,7 +409,7 @@ namespace MyCalculator
 			{
 				var history = item as CalculatedHistory;
 				double result = double.Parse(history.Result);
-				string[] equations = history.Equation.Trim().Split(' ');
+				string[] equations = history.Equation.Split(' ');
 				mOperand = new Operand(result);
 				mEquations.Clear();
 				foreach (var chunk in equations)
@@ -431,6 +428,16 @@ namespace MyCalculator
 		{
 			mHistoryEntries.Clear();
 		}
+
+		private void equations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			notifyPropertyChanged("DisplayedEquations");
+		}
+
+		private void historyEntries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			notifyPropertyChanged("HistoryEntries");
+		}
 		#endregion
 
 		private void notifyPropertyChanged(string propertyName)
@@ -441,14 +448,16 @@ namespace MyCalculator
 			}
 		}
 
-		private void equations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		private bool isOperatorSign(string str)
 		{
-			notifyPropertyChanged("DisplayedEquations");
-		}
-
-		private void historyEntries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			notifyPropertyChanged("HistoryEntries");
+			for (int i = 1; i < sOperatorSigns.Length; ++i)
+			{
+				if (str == sOperatorSigns[i])
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		private EFunction getFunctionOfButton(object sender)
@@ -559,6 +568,17 @@ namespace MyCalculator
 			xButtonMutiply.IsEnabled = value;
 			xButtonSubtract.IsEnabled = value;
 			xButtonAdd.IsEnabled = value;
+			xButtonDelete.IsEnabled = value;
+			xButton0.IsEnabled = value;
+			xButton1.IsEnabled = value;
+			xButton2.IsEnabled = value;
+			xButton3.IsEnabled = value;
+			xButton4.IsEnabled = value;
+			xButton5.IsEnabled = value;
+			xButton6.IsEnabled = value;
+			xButton7.IsEnabled = value;
+			xButton8.IsEnabled = value;
+			xButton9.IsEnabled = value;
 			double opacity = (value ? 1.0 : 0.2);
 			xButtonSquareRoot.Opacity = opacity;
 			xButtonSquare.Opacity = opacity;
@@ -571,6 +591,17 @@ namespace MyCalculator
 			xButtonMutiply.Opacity = opacity;
 			xButtonSubtract.Opacity = opacity;
 			xButtonAdd.Opacity = opacity;
+			xButtonDelete.Opacity = opacity;
+			xButton0.Opacity = opacity;
+			xButton1.Opacity = opacity;
+			xButton2.Opacity = opacity;
+			xButton3.Opacity = opacity;
+			xButton4.Opacity = opacity;
+			xButton5.Opacity = opacity;
+			xButton6.Opacity = opacity;
+			xButton7.Opacity = opacity;
+			xButton8.Opacity = opacity;
+			xButton9.Opacity = opacity;
 		}
 	}
 }
