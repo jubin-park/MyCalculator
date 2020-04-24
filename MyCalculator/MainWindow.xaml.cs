@@ -384,8 +384,17 @@ namespace MyCalculator
 				}
 				else
 				{
-					DisplayedValue = ERROR_MESSAGES[(int)EValueError.UNKNOWN];
-					setButtonsEnabled(false);
+					if (DisplayedValue == "-")
+					{
+						DisplayedValue = sCharZero;
+						mOperand.DomainValue = 0;
+						mOperand.FinalValue = mOperand.DomainValue;
+					}
+					else
+					{
+						DisplayedValue = ERROR_MESSAGES[(int)EValueError.UNKNOWN];
+						setButtonsEnabled(false);
+					}
 				}
 			}
 		}
