@@ -12,6 +12,207 @@
         WindowStartupLocation="CenterScreen"
         >
 
+    <Window.Resources>
+        <Style
+            x:Key="xStyleHighlighted1"
+            TargetType="Button"
+            >
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="BorderBrush" Value="#6bb9f0" />
+            <Setter Property="Foreground" Value="#3498db" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="Border"
+                            CornerRadius="2"
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            >
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True"
+                                />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsMouseOver" Value="True">
+                                <Setter
+                                    TargetName="Border"
+                                    Property="Background"
+                                    Value="#2574a9"
+                                    />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style
+            x:Key="xStyleHightlighted2"
+            TargetType="Button"
+            >
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="BorderBrush" Value="#48929B" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="Border"
+                            CornerRadius="2"
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            >
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True"
+                                />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsMouseOver" Value="True">
+                                <Setter
+                                    TargetName="Border"
+                                    Property="Background"
+                                    Value="#2574a9" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style
+            x:Key="xStyleOperator"
+            TargetType="Button"
+            >
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="BorderBrush" Value="Orange" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="Border"
+                            CornerRadius="2"
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            >
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True"
+                                />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsMouseOver" Value="True">
+                                <Setter
+                                    TargetName="Border"
+                                    Property="Background"
+                                    Value="#2574a9"
+                                    />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style
+            x:Key="xStyleNumber"
+            TargetType="Button"
+            >
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="BorderBrush" Value="DimGray" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            x:Name="Border"
+                            CornerRadius="2"
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            >
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True"
+                                />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsMouseOver" Value="True">
+                                <Setter
+                                    TargetName="Border"
+                                    Property="Background"
+                                    Value="#2574a9" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style
+            x:Key="xStyleTransparent"
+            TargetType="TextBox"
+            >
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border
+                            x:Name="border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="True"
+                            >
+                            <ScrollViewer
+                                x:Name="PART_ContentHost"
+                                Focusable="False"
+                                HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden"
+                                />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter
+                                    TargetName="border"
+                                    Property="BorderBrush"
+                                    Value="Transparent"
+                                    />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter
+                                    Property="BorderBrush"
+                                    TargetName="border"
+                                    Value="Transparent"
+                                    />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <!-- grid -->
     <Grid Margin="4">
         <Grid.RowDefinitions>        
             <RowDefinition Height="2*" />
@@ -40,7 +241,7 @@
                 </ColumnDefinition.Style>
             </ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <!-- history -->
+        <!-- History ListView -->
         <ListView
             ItemsSource="{Binding HistoryEntries}"
             Grid.Column="4"
@@ -77,21 +278,13 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button
-            Style="{StaticResource xStyleHighlighted1}"
-            Grid.Row="6"
-            Grid.Column="4"
-            Content="🗑"
-            Width="48"
-            HorizontalAlignment="Right"
-            Click="xButtonClearHistory_Click"
-            />
-        <!-- displaying labels -->
+        <!-- Displaying Labels -->
         <Grid Grid.ColumnSpan="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
+            <!-- Equation -->
             <Viewbox
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
@@ -106,6 +299,7 @@
                     MouseLeftButtonUp="xLabelDisplay_MouseLeftButtonUp"
                     />
             </Viewbox>
+            <!-- Result or Input -->
             <Viewbox
                 Grid.Row="1"
                 HorizontalAlignment="Right"
@@ -122,145 +316,154 @@
                     />
             </Viewbox>
         </Grid>
-        <!-- feature buttons -->
+        <!-- Feature Buttons -->
         <Button
             x:Name="xButtonDelete"
+            Content="⌫"
             Grid.Row="1"
             Grid.Column="0"
-            Content="⌫"
             Style="{StaticResource xStyleHighlighted1}"
             Click="xButtonDelete_Click"
             />
         <Button
             x:Name="xButtonAllClear"
+            Content="AC"
             Grid.Row="2"
             Grid.Column="0"
-            Content="AC"
             Style="{StaticResource xStyleHighlighted1}"
             Click="xButtonAllClear_Click"
             />
-        <!-- function buttons -->
+        <Button
+            Content="🗑"
+            Grid.Row="6"
+            Grid.Column="4"
+            Width="48"
+            HorizontalAlignment="Right"
+            Style="{StaticResource xStyleHighlighted1}"
+            Click="xButtonClearHistory_Click"
+            />
+        <!-- function Buttons -->
         <Button
             x:Name="xButtonSquareRoot"
+            Content="√𝓍"
             Grid.Row="1"
             Grid.Column="1"
-            Content="√𝓍"
             Style="{StaticResource xStyleHightlighted2}"
             Click="xButtonFunction_Click"
             />
         <Button
             x:Name="xButtonSquare"
+            Content=" 𝓍²"
             Grid.Row="1"
             Grid.Column="2"
-            Content=" 𝓍²"
             Style="{StaticResource xStyleHightlighted2}"
             Click="xButtonFunction_Click"
             />
         <Button
             x:Name="xButtonInverse"
+            Content="⅟𝓍"
             Grid.Row="1"
             Grid.Column="3"
-            Content="⅟𝓍"
             Style="{StaticResource xStyleHightlighted2}"
             Click="xButtonFunction_Click"
             />
         <Button
             x:Name="xButtonSign"
+            Content="±"
             Grid.Row="2"
             Grid.Column="1"
-            Content="±"
             Style="{StaticResource xStyleHightlighted2}"
             Click="xButtonFunction_Click"
             />
         <Button
             x:Name="xButtonPercent"
+            Content="%"
             Grid.Row="2"
             Grid.Column="2"
-            Content="%"
             Style="{StaticResource xStyleHightlighted2}"
             Click="xButtonFunction_Click"
             />
-        <!-- operator buttons -->
+        <!-- Operator Buttons -->
         <Button
             x:Name="xButtonDivide"
+            Content="÷"
             Grid.Row="2"
             Grid.Column="3"
-            Content="÷"
             Style="{StaticResource xStyleOperator}"
             Click="xButtonOperate_Click"
             />
         <Button
             x:Name="xButtonMutiply"
+            Content="×"
             Grid.Row="3"
             Grid.Column="3"
-            Content="×"
             Style="{StaticResource xStyleOperator}"
             Click="xButtonOperate_Click"
             />
         <Button
             x:Name="xButtonSubtract"
+            Content="-"
             Grid.Row="4"
             Grid.Column="3"
-            Content="-"
             Style="{StaticResource xStyleOperator}"
             Click="xButtonOperate_Click"
             />
         <Button
             x:Name="xButtonAdd"
+            Content="+"
             Grid.Row="5"
             Grid.Column="3"
-            Content="+"
             Style="{StaticResource xStyleOperator}"
             Click="xButtonOperate_Click"
             />
         <Button
             x:Name="xButtonEqual"
+            Content="="
             Grid.Row="6"
             Grid.Column="3"
-            Content="="
-            Style="{StaticResource xStyleHighlighted1}"
             FontSize="24"
+            Style="{StaticResource xStyleHighlighted1}"
             Click="xButtonOperate_Click"
             />
-        <!-- number buttons and point button -->
+        <!-- Number Buttons and Point Button -->
         <Button
             x:Name="xButton0"
+            Content="0"
             Grid.Row="6"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            Content="0"
             Style="{StaticResource xStyleNumber}"
             Click="xButtonNumber_Click"
             />
         <Button
             x:Name="xButton1"
+            Content="1"
             Grid.Row="5"
             Grid.Column="0"
-            Content="1"
             Style="{StaticResource xStyleNumber}"
             Click="xButtonNumber_Click"
             />
         <Button
             x:Name="xButton2"
+            Content="2"
             Grid.Row="5"
             Grid.Column="1"
-            Content="2"
             Style="{StaticResource xStyleNumber}"
             Click="xButtonNumber_Click"
             />
         <Button
             x:Name="xButton3"
+            Content="3"
             Grid.Row="5"
             Grid.Column="2"
-            Content="3"
             Style="{StaticResource xStyleNumber}"
             Click="xButtonNumber_Click"
             />
         <Button
             x:Name="xButton4"
+            Content="4"
             Grid.Row="4"
             Grid.Column="0"
-            Content="4"
             Style="{StaticResource xStyleNumber}"
             Click="xButtonNumber_Click"
             />
@@ -274,41 +477,41 @@
             />
         <Button
             x:Name="xButton6"
+            Content="6"
             Grid.Row="4"
             Grid.Column="2"
-            Content="6"
             Style="{StaticResource xStyleNumber}"
             Click="xButtonNumber_Click"
             />
         <Button
             x:Name="xButton7"
+            Content="7"
             Grid.Row="3"
             Grid.Column="0"
-            Content="7"
             Style="{StaticResource xStyleNumber}"
             Click="xButtonNumber_Click"
             />
         <Button
             x:Name="xButton8"
+            Content="8"
             Grid.Row="3"
             Grid.Column="1"
-            Content="8"
             Style="{StaticResource xStyleNumber}"
             Click="xButtonNumber_Click"
             />
         <Button
             x:Name="xButton9"
+            Content="9"
             Grid.Row="3"
             Grid.Column="2"
-            Content="9"
             Style="{StaticResource xStyleNumber}"
             Click="xButtonNumber_Click"
             />
         <Button
             x:Name="xButtonPoint"
+            Content="."
             Grid.Row="6"
             Grid.Column="2"
-            Content="."
             Style="{StaticResource xStyleNumber}"
             Click="xButtonPoint_Click"
             />
