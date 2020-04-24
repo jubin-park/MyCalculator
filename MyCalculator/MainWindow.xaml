@@ -1,0 +1,311 @@
+﻿<Window x:Class="MyCalculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyCalculator"
+        mc:Ignorable="d"
+        Title="MyCalculator"
+        Height="480"
+        Width="640"
+        Background="#22313F"
+        WindowStartupLocation="CenterScreen"
+        >
+
+    <Grid Margin="4">
+        <Grid.RowDefinitions>        
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*">
+                <ColumnDefinition.Style>
+                    <Style TargetType="ColumnDefinition">
+                        <Setter Property="Width" Value="*"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsColumnVisible}" Value="False">
+                                <Setter Property="Width" Value="0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <!-- history -->
+        <ListView
+            ItemsSource="{Binding HistoryEntries}"
+            Grid.Column="4"
+            Grid.RowSpan="6"
+            Background="#22313A"
+            Foreground="White"
+            BorderBrush="Transparent"
+            HorizontalContentAlignment="Right"
+            SelectionChanged="xListView_SelectionChanged"
+            >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBox
+                            Style="{StaticResource xStyleTransparent}"
+                            Text="{Binding Equation, Mode=OneWay}"
+                            HorizontalAlignment="right"
+                            IsReadOnly="True"
+                            FontSize="14"
+                            Foreground="LightGray"
+                            />
+                        <TextBox
+                            Style="{StaticResource xStyleTransparent}"
+                            Text="{Binding Result, Mode=OneWay}"
+                            HorizontalAlignment="right"
+                            IsReadOnly="True" 
+                            FontSize="24"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button
+            Style="{StaticResource xStyleHighlighted1}"
+            Grid.Row="6"
+            Grid.Column="4"
+            Content="🗑"
+            Width="48"
+            HorizontalAlignment="Right"
+            Click="xButtonClearHistory_Click"
+            />
+        <!-- displaying labels -->
+        <Grid Grid.ColumnSpan="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Viewbox
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                >
+                <Label
+                    x:Name="xLabelLog"
+                    Content="{Binding DisplayedEquations}"
+                    Margin="0, 4, 0, 4"
+                    Foreground="LightGray"
+                    />
+            </Viewbox>
+            <Viewbox
+                Grid.Row="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                >
+                <Label
+                    x:Name="xLabelResult"
+                    Content="{Binding DisplayedValue}"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    Cursor="Hand"
+                    MouseLeftButtonUp="xLabelResult_MouseLeftButtonUp"
+                    VerticalAlignment="Bottom"
+                    />
+            </Viewbox>
+        </Grid>
+        <!-- feature buttons -->
+        <Button
+            x:Name="xButtonDelete"
+            Grid.Row="1"
+            Grid.Column="0"
+            Content="⌫"
+            Style="{StaticResource xStyleHighlighted1}"
+            Click="xButtonDelete_Click"
+            />
+        <Button
+            x:Name="xButtonAllClear"
+            Grid.Row="2"
+            Grid.Column="0"
+            Content="AC"
+            Style="{StaticResource xStyleHighlighted1}"
+            Click="xButtonAllClear_Click"
+            />
+        <!-- function buttons -->
+        <Button
+            x:Name="xButtonSquareRoot"
+            Grid.Row="1"
+            Grid.Column="1"
+            Content="√𝓍"
+            Style="{StaticResource xStyleHightlighted2}"
+            Click="xButtonFunction_Click"
+            />
+        <Button
+            x:Name="xButtonSquare"
+            Grid.Row="1"
+            Grid.Column="2"
+            Content=" 𝓍²"
+            Style="{StaticResource xStyleHightlighted2}"
+            Click="xButtonFunction_Click"
+            />
+        <Button
+            x:Name="xButtonInverse"
+            Grid.Row="1"
+            Grid.Column="3"
+            Content="⅟𝓍"
+            Style="{StaticResource xStyleHightlighted2}"
+            Click="xButtonFunction_Click"
+            />
+        <Button
+            x:Name="xButtonSign"
+            Grid.Row="2"
+            Grid.Column="1"
+            Content="±"
+            Style="{StaticResource xStyleHightlighted2}"
+            Click="xButtonFunction_Click"
+            />
+        <Button
+            x:Name="xButtonPercent"
+            Grid.Row="2"
+            Grid.Column="2"
+            Content="%"
+            Style="{StaticResource xStyleHightlighted2}"
+            Click="xButtonFunction_Click"
+            />
+        <!-- operator buttons -->
+        <Button
+            x:Name="xButtonDivide"
+            Grid.Row="2"
+            Grid.Column="3"
+            Content="÷"
+            Style="{StaticResource xStyleOperator}"
+            Click="xButtonOperate_Click"
+            />
+        <Button
+            x:Name="xButtonMutiply"
+            Grid.Row="3"
+            Grid.Column="3"
+            Content="×"
+            Style="{StaticResource xStyleOperator}"
+            Click="xButtonOperate_Click"
+            />
+        <Button
+            x:Name="xButtonSubtract"
+            Grid.Row="4"
+            Grid.Column="3"
+            Content="-"
+            Style="{StaticResource xStyleOperator}"
+            Click="xButtonOperate_Click"
+            />
+        <Button
+            x:Name="xButtonAdd"
+            Grid.Row="5"
+            Grid.Column="3"
+            Content="+"
+            Style="{StaticResource xStyleOperator}"
+            Click="xButtonOperate_Click"
+            />
+        <Button
+            x:Name="xButtonEqual"
+            Grid.Row="6"
+            Grid.Column="3"
+            Content="="
+            Style="{StaticResource xStyleHighlighted1}"
+            FontSize="24"
+            Click="xButtonOperate_Click"
+            />
+        <!-- number buttons and point button -->
+        <Button
+            x:Name="xButton0"
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Content="0"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButton1"
+            Grid.Row="5"
+            Grid.Column="0"
+            Content="1"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButton2"
+            Grid.Row="5"
+            Grid.Column="1"
+            Content="2"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButton3"
+            Grid.Row="5"
+            Grid.Column="2"
+            Content="3"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButton4"
+            Grid.Row="4"
+            Grid.Column="0"
+            Content="4"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButton5"
+            Grid.Row="4"
+            Grid.Column="1"
+            Content="5"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButton6"
+            Grid.Row="4"
+            Grid.Column="2"
+            Content="6"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButton7"
+            Grid.Row="3"
+            Grid.Column="0"
+            Content="7"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButton8"
+            Grid.Row="3"
+            Grid.Column="1"
+            Content="8"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButton9"
+            Grid.Row="3"
+            Grid.Column="2"
+            Content="9"
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonNumber_Click"
+            />
+        <Button
+            x:Name="xButtonPoint"
+            Grid.Row="6"
+            Grid.Column="2"
+            Content="."
+            Style="{StaticResource xStyleNumber}"
+            Click="xButtonPoint_Click"
+            />
+    </Grid>
+</Window>
