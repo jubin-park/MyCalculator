@@ -61,6 +61,7 @@
                             IsReadOnly="True"
                             FontSize="14"
                             Foreground="LightGray"
+                            Margin="4"
                             />
                         <TextBox
                             Style="{StaticResource xStyleTransparent}"
@@ -70,6 +71,7 @@
                             FontSize="24"
                             Foreground="White"
                             FontWeight="Bold"
+                            Margin="4"
                             />
                     </StackPanel>
                 </DataTemplate>
@@ -97,8 +99,11 @@
                 <Label
                     x:Name="xLabelLog"
                     Content="{Binding DisplayedEquations}"
-                    Margin="0, 4, 0, 4"
+
                     Foreground="LightGray"
+                    Cursor="Hand"
+                    VerticalAlignment="Bottom"
+                    MouseLeftButtonUp="xLabelDisplay_MouseLeftButtonUp"
                     />
             </Viewbox>
             <Viewbox
@@ -112,8 +117,8 @@
                     FontWeight="Bold"
                     Foreground="White"
                     Cursor="Hand"
-                    MouseLeftButtonUp="xLabelResult_MouseLeftButtonUp"
                     VerticalAlignment="Bottom"
+                    MouseLeftButtonUp="xLabelDisplay_MouseLeftButtonUp"
                     />
             </Viewbox>
         </Grid>
