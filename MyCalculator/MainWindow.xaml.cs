@@ -18,7 +18,6 @@ namespace MyCalculator
 		OPERATOR,
 		SUCCESS,
 		LOAD,
-		ERROR,
 	}
 
 	public class CalculatedHistory
@@ -67,7 +66,7 @@ namespace MyCalculator
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 		
-		public static readonly string[] ERROR_MESSAGES = { string.Empty, "0으로 나눌 수 없습니다", "정의된 수가 아닙니다", "오버플로우", "언더플로우", "알 수 없는 오류"};
+		public static readonly string[] ERROR_MESSAGES = { string.Empty, "0으로 나눌 수 없습니다", "정의된 수가 아닙니다", "오버플로우", "언더플로우", "잘못된 입력입니다"};
 
 		private static readonly string sCharZero = "0";
 		private static readonly string sCharRoot = "√";
