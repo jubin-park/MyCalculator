@@ -274,7 +274,7 @@ namespace MyCalculator
 			// Check error
 			if (err == EValueError.NO_ERROR)
 			{
-				DisplayedValue = mOperand.ToString();
+				DisplayedValue = mOperand.FinalValue.ToString();
 			}
 			else
 			{
@@ -321,7 +321,7 @@ namespace MyCalculator
 				// Check error
 				if (err == EValueError.NO_ERROR)
 				{
-					DisplayedValue = mOperand.ToString();
+					DisplayedValue = mLastValue.ToString();
 				}
 				else
 				{
