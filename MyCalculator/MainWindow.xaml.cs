@@ -352,6 +352,7 @@ namespace MyCalculator
 				mMode = EMode.SUCCESS;
 				mOperand = new Operand(mLastValue);
 				mHistoryEntries.Add(new CalculatedHistory(DisplayedEquations, mLastValue.ToString()));
+				DisplayedValue = mOperand.ToString();
 			}
 		}
 

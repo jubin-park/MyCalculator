@@ -37,21 +37,21 @@ namespace MyCalculator.Classes
         public static double Add(double x, double y, out EValueError err)
         {
             double z = x + y;
-            err = GetError(z);
+            err = GetErrorFromNumber(z);
             return z;
         }
 
         public static double Subtract(double x, double y, out EValueError err)
         {
             double z = x - y;
-            err = GetError(z);
+            err = GetErrorFromNumber(z);
             return z;
         }
 
         public static double Multiply(double x, double y, out EValueError err)
         {
             double z = x * y;
-            err = GetError(z);
+            err = GetErrorFromNumber(z);
             return z;
         }
 
@@ -64,7 +64,7 @@ namespace MyCalculator.Classes
             }
             else
             {
-                err = GetError(z);
+                err = GetErrorFromNumber(z);
             }
             return z;
         }
@@ -72,14 +72,14 @@ namespace MyCalculator.Classes
         public static double GetSquareRoot(double x, out EValueError err)
         {
             double z = Math.Sqrt(x);
-            err = GetError(z);
+            err = GetErrorFromNumber(z);
             return z;
         }
 
         public static double GetSquare(double x, out EValueError err)
         {
-            double z = Math.Sqrt(x * x);
-            err = GetError(z);
+            double z = x * x;
+            err = GetErrorFromNumber(z);
             return z;
         }
 
@@ -92,12 +92,12 @@ namespace MyCalculator.Classes
             }
             else
             {
-                err = GetError(z);
+                err = GetErrorFromNumber(z);
             }
             return z;
         }
 
-        public static EValueError GetError(double x)
+        public static EValueError GetErrorFromNumber(double x)
         {
             if (double.IsNaN(x))
             {
